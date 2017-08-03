@@ -19,17 +19,13 @@ import java.util.List;
  */
 public class DbManage {
 
-    static Connection crunchifyConn = null;
-    static PreparedStatement crunchifyPrepareStat = null;
+    static Connection con = null;
+    static PreparedStatement ps = null;
 
     public DbManage() {
 
     }
 
-    private static void log(String text){
-        System.out.println(text);
-    }
-    
     
     public List<Student> getStudentsDB(){
     
@@ -71,27 +67,27 @@ public class DbManage {
     
     public static void main(String[] args) {
 
-        System.out.println("Manage");
+        System.out.println("Class for name");
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            log("Congrats - Seems your MySQL JDBC Driver Registered!");
+          
         } catch (ClassNotFoundException e) {
-            log("Sorry, couldn't found JDBC driver. Make sure you have added JDBC Maven Dependency Correctly");
+           
             e.printStackTrace();
             return;
         }
 
         try {
             // DriverManager: The basic service for managing a set of JDBC drivers.
-            crunchifyConn = DriverManager.getConnection("jdbc:mysql://localhost:3306/university", "lsdany_db", "Lsdanydb");
-            if (crunchifyConn != null) {
-                log("Connection Successful! Enjoy. Now it's time to push data");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/university", "lsdany_db", "Lsdanydb");
+            if (con != null) {
+                System.out.println("conexion exitosa");
             } else {
-                log("Failed to make connection!");
+                System.out.println("Fallo la conexion");
             }
         } catch (SQLException e) {
-            log("MySQL Connection Failed!");
+            System.out.println("MySQL exception");
             e.printStackTrace();
             return;
         }
