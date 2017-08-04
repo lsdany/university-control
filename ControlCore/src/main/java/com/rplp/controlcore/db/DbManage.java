@@ -5,6 +5,7 @@
  */
 package com.rplp.controlcore.db;
 
+import com.rplp.controlcore.entity.Classes;
 import com.rplp.controlcore.entity.Student;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,6 +17,9 @@ import java.util.List;
 /**
  *
  * @author luisdany pernillo
+ * @version 0.0.1
+ * Clase simple sin manejo de conexiones, se crea una nueva conexion cada vez
+ * que se va a realizar una operacion con la base de datos
  */
 public class DbManage {
 
@@ -27,8 +31,7 @@ public class DbManage {
     }
 
     
-    public List<Student> getStudentsDB(){
-    
+    public List<Classes> getClasses(){
         
         Connection con = null;
         PreparedStatement ps = null;
@@ -61,9 +64,86 @@ public class DbManage {
         }
         
         
+        
         return null;
     }
     
+    public List<Student> getStudentsDB(){
+    
+        
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        try{
+            
+            con = getConnection();
+         
+            if(con == null){
+                throw new SQLException("Conection is null");
+            }
+            
+            try{
+                ps = con.prepareStatement(null);
+                try{
+                    rs = ps.executeQuery();
+                    try{
+                        while(rs.next()){
+                            
+                        }
+                    }finally{
+                        rs.close();
+                    }
+                }finally{
+                    ps.close();
+                }
+            }finally{
+                con.close();
+            }
+            
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+        
+        
+        return null;
+    }
+    
+    
+    private Connection getConnection(){
+        
+        System.out.println("Inicializando jdbc driver");
+
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+          
+        } catch (ClassNotFoundException e) {
+           
+            e.printStackTrace();
+            return null;
+        }
+
+        Connection con = null;
+        
+        try {
+            System.out.println("Creando la conexion");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/UNIVERSITY", "lsdany_db", "Lsdanydb");
+            if (con != null) {
+                System.out.println("conexion exitosa");
+                return con;
+            } else {
+                System.out.println("Fallo la conexion");
+                return null;
+            }
+        } catch (SQLException e) {
+            System.out.println("MySQL exception");
+            e.printStackTrace();
+            return null;
+        }
+        
+        
+        
+    }
     
     public static void main(String[] args) {
 
@@ -80,7 +160,7 @@ public class DbManage {
 
         try {
             // DriverManager: The basic service for managing a set of JDBC drivers.
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/university", "lsdany_db", "Lsdanydb");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/UNIVERSITY", "lsdany_db", "Lsdanydb");
             if (con != null) {
                 System.out.println("conexion exitosa");
             } else {

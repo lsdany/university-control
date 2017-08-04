@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Students Control</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </h:head>
+    <h:body>
+
+
+        <!-- dialog para mensajes -->
+
+        <p:dialog modal="true" widgetVar="statusDialog" header="Procesando"
+                  draggable="false" closable="false" resizable="false">
+            <p:graphicImage value="./../../images/procesando.gif" />
+        </p:dialog>
+        <p:growl id="growl" showDetail="false" life="4500" />
+
+        <!--  fin -->
+
+        <h:form id="form">
+
+            <p:panel   style="height: auto; width: 95%; margin-top: 0px; margin-bottom: 10px ; margin-left:-0px; border: 0px" >  
+                <h1 style="margin-left: 30px; margin-top: 10px; float: left; font-size: 3em">Clases</h1>
+                <p:panel     style="width: auto; height: auto; margin-left: 50px;margin-top: 60px; margin-bottom: 10px ; min-width: 1220px; max-width:1220px; min-height: 450px;" >
+
+                    <h:panelGrid columns="4" cellspacing="10" style="margin-top: 20px; margin-left: 50px">
+
+                        <!-- informaci[on del catedratico -->
+
+                    </h:panelGrid>
+
+                    <p:scrollPanel mode="native" style="height: 100%; min-height: 400px; width: auto; margin: 10px 20px 0px; background: white; border: 0">
+                        <p:dataTable var="row" emptyMessage="No se encontraron registros" paginatorPosition="top" paginator="true" rows="10"
+                                     id="clasesTable" value="#{clasesBean.classesList}" rowKey="#{row.idClass}" >
+
+                            <p:column headerText="Id" style="width: 50px" filterStyle="width:50px"  id="idClass"  >
+                                #{row.idClass}
+                            </p:column>
+                            
+                            <p:column headerText="Clase" style="width: 50px" filterStyle="width:50px"  id="nameClass"  >
+                                #{row.name}
+                            </p:column>
+                            
+                            <p:column headerText="Seccion" style="width: 50px" filterStyle="width:50px"  id="sectionClass"  >
+                                #{row.section}
+                            </p:column>
+
+                        </p:dataTable>
+                    </p:scrollPanel>
+
+                </p:panel>
+            </p:panel>
+        </h:form>
+
+
+
+    </h:body>
+</html>

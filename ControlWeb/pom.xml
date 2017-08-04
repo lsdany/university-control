@@ -41,7 +41,11 @@
             <artifactId>ControlCore</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>  
-
+        <dependency>
+            <groupId>org.primefaces.themes</groupId>
+            <artifactId>afterdark</artifactId>
+            <version>1.0.10</version>
+        </dependency>
 
     </dependencies>
 
