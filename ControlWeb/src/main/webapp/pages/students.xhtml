@@ -12,68 +12,55 @@ and open the template in the editor.
       xmlns:p="http://primefaces.org/ui">
 
 
-    <f:view contentType="text/html">
-        <h:head>
-            <f:facet name="first">
-                <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
-                <title>Information</title>
-            </f:facet>
-        </h:head>
+<f:view contentType="text/html">
+    <h:head>
+        <f:facet name="first">
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <title>Information estudiantes</title>
+        </f:facet>
+    </h:head>
 
-        <h:body>
-            <h:form id="form">
-                
-                <p:growl id="msgs" showDetail="true"/>
-                
-                <p:layout fullPage="true">
+    <h:body>
+        <h:form id="form">
 
-                    <p:layoutUnit position="north" size="100" resizable="true" closable="true" collapsible="true">
-                        Header
-                    </p:layoutUnit>
+            <!-- dialog para mensajes -->
 
-                    <p:layoutUnit position="south" size="100" closable="true" collapsible="true">
-                        Footer
-                    </p:layoutUnit>
+            <p:dialog modal="true" widgetVar="statusDialog" header="Procesando"
+                      draggable="false" closable="false" resizable="false">
+                <p:graphicImage value="./../../images/procesando.gif"/>
+            </p:dialog>
+            <p:growl id="growl" showDetail="false" life="4500"/>
 
-                    <p:layoutUnit position="west" size="175" header="Menu" collapsible="true">
-                        <p:menu>
-                            <p:submenu label="Resources">
-                                <p:menuitem value="Notes" url="http://www.primefaces.org/showcase-labs/ui/home.jsf" />
-                                <p:menuitem value="Documentation" url="http://www.primefaces.org/documentation.html" />
-                                <p:menuitem value="Forum" url="http://forum.primefaces.org/" />
-                                <p:menuitem value="Themes" url="http://www.primefaces.org/themes.html" />
+            <!--  fin -->
 
-                            </p:submenu>
 
-                        </p:menu>
-                    </p:layoutUnit>
+            <p:dataTable id="studentsTable" var="student" value="#{studentBean.studentList}"
+                         emptyMessage="No se encontraron datos"
+                         editable="true" editMode="cell" widgetVar="studentsCell"
+                         style="width: 80% ; alignment-baseline: middle ">
 
-                    <p:layoutUnit position="center">
-                        <p:dataTable id="studentsTable" var="student" value="#{studentBean.studentList}" emptyMessage="No se encontraron datos" 
-                                     editable="true" editMode="cell" widgetVar="studentsCell" style="width: 80% ; alignment-baseline: middle ">
-                            
-                            <p:ajax event="cellEdit" listener="#{studentBean.onCellEdit}" update=":form:msgs" />
-                            
-                            <p:column headerText="Id" id="id" >
-                                <h:outputText value="#{student.id}" />
-                            </p:column>
-                            <p:column headerText="Name" id="name">
-                                <h:outputText value="#{student.name}" />
-                            </p:column>
-                            <p:column headerText="Email">
-                                <p:cellEditor>
-                                    <f:facet name="output"><h:outputText value="#{student.email}" /></f:facet>
-                                    <f:facet name="input"><p:inputText value="#{student.email}" style="width:96%" label="Email"  /></f:facet>
-                                </p:cellEditor>
-                            </p:column>
-                        </p:dataTable>
-                    </p:layoutUnit>
+                <p:ajax event="cellEdit" listener="#{studentBean.onCellEdit}" update=":form:growl"/>
 
-                </p:layout>
-            </h:form>    
-        </h:body>
+                <p:column headerText="Id" id="id">
+                    <h:outputText value="#{student.idStudent}"/>
+                </p:column>
+                <p:column headerText="Name" id="name">
+                    <h:outputText value="#{student.name}"/>
+                </p:column>
+                <p:column headerText="Email">
+                    <p:cellEditor>
+                        <f:facet name="output"><h:outputText value="#{student.email}"/></f:facet>
+                        <f:facet name="input"><p:inputText value="#{student.email}" style="width:96%"
+                                                           label="Email"/></f:facet>
+                    </p:cellEditor>
+                </p:column>
+            </p:dataTable>
 
-    </f:view>
+
+        </h:form>
+    </h:body>
+
+</f:view>
 
 
 </html>

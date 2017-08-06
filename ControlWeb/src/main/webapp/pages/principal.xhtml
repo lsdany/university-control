@@ -55,6 +55,10 @@ and open the template in the editor.
                                 #{row.section}
                             </p:column>
 
+                            <p:column headerText="Ir" style="width: 50px" filterStyle="width:50px"    >
+                                <p:commandButton action="#{clasesBean.goStudents}" value="submit" />
+                            </p:column>
+
                         </p:dataTable>
                     </p:scrollPanel>
 

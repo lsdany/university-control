@@ -13,18 +13,20 @@ import java.io.Serializable;
  */
 public class Student implements Serializable{
 
-    private double id;
+//     `IDSTUDENT` INT NOT NULL auto_increment,
+//  `NAME` VARCHAR(100) NOT NULL,
+//  `CODE` VARCHAR(25) NOT NULL,
+//  `EMAIL` VARCHAR(100) NULL,
+//  `IDCLASS` INT NOT NULL,
+//            `SECTION` VARCHAR(2) NOT NULL,
+//    PRIMARY KEY (`IDSTUDENT`),
+
+    private int idStudent;
     private String name;
-    private String idCard;
+    private String code;
     private String email;
-
-    public double getId() {
-        return id;
-    }
-
-    public void setId(double id) {
-        this.id = id;
-    }
+    private int idClass;
+    private String section;
 
     public String getName() {
         return name;
@@ -32,14 +34,6 @@ public class Student implements Serializable{
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getIdCard() {
-        return idCard;
-    }
-
-    public void setIdCard(String idCard) {
-        this.idCard = idCard;
     }
 
     public String getEmail() {
@@ -50,9 +44,36 @@ public class Student implements Serializable{
         this.email = email;
     }
 
-    @Override
-    public String toString() {
-        return "Student{" + "id=" + id + ", name=" + name + ", idCard=" + idCard + ", email=" + email + '}';
+
+    public int getIdStudent() {
+        return idStudent;
     }
-    
+
+    public void setIdStudent(int idStudent) {
+        this.idStudent = idStudent;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    public int getIdClass() {
+        return idClass;
+    }
+
+    public void setIdClass(int idClass) {
+        this.idClass = idClass;
+    }
+
+    public String getSection() {
+        return section;
+    }
+
+    public void setSection(String section) {
+        this.section = section;
+    }
 }
