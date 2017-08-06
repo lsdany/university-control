@@ -7,11 +7,14 @@ package com.rplp.controlcore.db;
 
 import com.rplp.controlcore.entity.Classes;
 import com.rplp.controlcore.entity.Student;
+
+import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,9 +26,6 @@ import java.util.List;
  */
 public class DbManage {
 
-    static Connection con = null;
-    static PreparedStatement ps = null;
-
     public DbManage() {
 
     }
@@ -36,18 +36,25 @@ public class DbManage {
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+
+        List<Classes> clasesList = null;
+
         try{
             
-            con = null;
+            con = getConnection();
             
             try{
-                ps = con.prepareStatement(null);
+                ps = con.prepareStatement("SELECT * FROM UNIVERSITY.CLASS ");
                 try{
                     rs = ps.executeQuery();
                     try{
+                        clasesList = new ArrayList<>();
                         while(rs.next()){
-                            
+                            Classes clase = new Classes();
+                            clase.setIdClass(rs.getInt(1));
+                            clase.setName(rs.getString(2));
+                            clase.setSection(rs.getString(3));
+                            clasesList.add(clase);
                         }
                     }finally{
                         rs.close();
@@ -62,34 +69,40 @@ public class DbManage {
         }catch(SQLException e){
             e.printStackTrace();
         }
-        
-        
-        
-        return null;
+
+        return clasesList;
     }
     
-    public List<Student> getStudentsDB(){
+    public List<Student> getStudentsList(){
     
         
         Connection con = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        
+        List<Student> studentList = null;
         try{
             
             con = getConnection();
          
             if(con == null){
-                throw new SQLException("Conection is null");
+                throw new SQLException("Connection is null");
             }
             
             try{
-                ps = con.prepareStatement(null);
+                ps = con.prepareStatement("SELECT * FROM UNIVERSITY.STUDENT");
                 try{
                     rs = ps.executeQuery();
                     try{
+                        studentList = new ArrayList<>();
                         while(rs.next()){
-                            
+                            Student student = new Student();
+                            student.setIdClass(rs.getInt("IDSTUDENT"));
+                            student.setName(rs.getString("NAME"));
+                            student.setCode(rs.getString("CODE"));
+                            student.setEmail(rs.getString("EMAIL"));
+                            student.setIdClass(rs.getInt("IDCLASS"));
+                            student.setSection(rs.getString("SECTION"));
+                            studentList.add(student);
                         }
                     }finally{
                         rs.close();
@@ -106,7 +119,7 @@ public class DbManage {
         }
         
         
-        return null;
+        return studentList;
     }
     
     
@@ -127,7 +140,7 @@ public class DbManage {
         
         try {
             System.out.println("Creando la conexion");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/UNIVERSITY", "lsdany_db", "Lsdanydb");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/UNIVERSITY", "luisdany", "Lsdany$");
             if (con != null) {
                 System.out.println("conexion exitosa");
                 return con;
@@ -160,7 +173,7 @@ public class DbManage {
 
         try {
             // DriverManager: The basic service for managing a set of JDBC drivers.
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/UNIVERSITY", "lsdany_db", "Lsdanydb");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/UNIVERSITY", "lsdany_db", "Lsdanydb");
             if (con != null) {
                 System.out.println("conexion exitosa");
             } else {
