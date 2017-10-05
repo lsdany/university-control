@@ -76,4 +76,16 @@ public class Student implements Serializable{
     public void setSection(String section) {
         this.section = section;
     }
+
+    @Override
+    public String toString() {
+        return "Student{" +
+                "idStudent=" + idStudent +
+                ", name='" + name + '\'' +
+                ", code='" + code + '\'' +
+                ", email='" + email + '\'' +
+                ", idClass=" + idClass +
+                ", section='" + section + '\'' +
+                '}';
+    }
 }

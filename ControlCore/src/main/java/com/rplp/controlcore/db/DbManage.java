@@ -72,7 +72,62 @@ public class DbManage {
 
         return clasesList;
     }
-    
+
+
+    private Student fillStudent(ResultSet rs){
+        Student student = new Student();
+        try{
+            student.setIdStudent(rs.getInt("IDSTUDENT"));
+            student.setName(rs.getString("NAME"));
+            student.setCode(rs.getString("CODE"));
+            student.setEmail(rs.getString("EMAIL"));
+            student.setIdClass(rs.getInt("IDCLASS"));
+            student.setSection(rs.getString("SECTION"));
+        }catch(SQLException e){
+            e.printStackTrace();
+        }
+
+        return student;
+    }
+
+    public List<Student> getStudentsById(String idClass, String section){
+
+        Connection con = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        List<Student> listStudent = null;
+
+        try{
+            con = getConnection();
+            try{
+                ps = con.prepareStatement(" SELECT * FROM UNIVERSITY.STUDENT WHERE IDCLASS = ?  AND SECTION = ? ");
+                ps.setObject(1, idClass);
+                ps.setObject(2,section);
+                try{
+                    rs = ps.executeQuery();
+                    try{
+                        listStudent = new ArrayList<>();
+                        while(rs.next()){
+                            Student student = fillStudent(rs);
+                            listStudent.add(student);
+                        }
+                    }finally{
+                        rs.close();
+                    }
+                }finally{
+                    ps.close();
+                }
+            }finally {
+                con.close();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return listStudent;
+
+    }
+
     public List<Student> getStudentsList(){
     
         
@@ -96,7 +151,7 @@ public class DbManage {
                         studentList = new ArrayList<>();
                         while(rs.next()){
                             Student student = new Student();
-                            student.setIdClass(rs.getInt("IDSTUDENT"));
+                            student.setIdStudent(rs.getInt("IDSTUDENT"));
                             student.setName(rs.getString("NAME"));
                             student.setCode(rs.getString("CODE"));
                             student.setEmail(rs.getString("EMAIL"));
@@ -121,8 +176,13 @@ public class DbManage {
         
         return studentList;
     }
-    
-    
+
+    /**
+     * Para obtener conexion
+     * se debe cerrar en el metodo
+     * que lo utiliza
+     * @return
+     */
     private Connection getConnection(){
         
         System.out.println("Inicializando jdbc driver");
@@ -153,11 +213,83 @@ public class DbManage {
             e.printStackTrace();
             return null;
         }
-        
-        
-        
+
     }
-    
+
+    public boolean saveStudentsList(List<Student> students, String idClass, String section){
+
+        if(students != null){
+
+            Connection con = null;
+            PreparedStatement ps = null;
+            String query = " INSERT INTO UNIVERSITY.STUDENT(IDSTUDENT, NAME, CODE, EMAIL, IDCLASS, SECTION) "+
+                    " VALUES (? , ? , ? , ? , ? , ? ) ";
+
+            try{
+                con = getConnection();
+                try{
+                    for(Student s : students){
+
+                        s.toString();
+                        ps = con.prepareStatement(query);
+                        ps.setInt(1,s.getIdStudent());
+                        ps.setString(2,s.getName());
+                        ps.setString(3,s.getCode());
+                        ps.setString(4,s.getEmail());
+                        ps.setInt(5, Integer.valueOf(idClass));
+                        ps.setString(6, section);
+                        try{
+                            ps.executeUpdate();
+
+                        }finally{
+                            ps.close();
+                            ps = null;
+                        }
+                    }
+                }finally {
+                    con.close();
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+                return false;
+            }
+
+
+
+        }
+
+        return true;
+    }
+
+    public boolean saveClass(String nameClass, String section){
+
+        Connection con = null;
+        PreparedStatement ps = null;
+
+        try{
+            con = getConnection();
+            try{
+                ps = con.prepareStatement("");
+                try{
+                    int row = ps.executeUpdate();
+                    if(row > 0){
+                        return true;
+                    }else
+                        return false;
+                }finally {
+                    ps.close();
+                }
+            }finally{
+                con.close();
+            }
+        }catch(SQLException s){
+            s.printStackTrace();
+        }
+
+        return false;
+    }
+
+
     public static void main(String[] args) {
 
         System.out.println("Class for name");

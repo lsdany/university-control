@@ -10,6 +10,7 @@ import com.rplp.controlcore.entity.Student;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,16 +28,30 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class ReadXLSX implements ManageExcel {
 
     @Override
-    public Workbook readFile(String path) {
+    public Workbook readFile(File file) {
         
         Workbook workbook = null;
         try{
-            FileInputStream excelFile = new FileInputStream(new File(path));
+            FileInputStream excelFile = new FileInputStream(file);
             workbook = new XSSFWorkbook(excelFile);
         }catch(IOException e){
             e.printStackTrace();
         }
         
+        return workbook;
+    }
+
+    public Workbook getFile(InputStream file){
+
+        Workbook workbook = null;
+        try{
+//            FileInputStream excelFile = new FileInputStream(file);
+
+            workbook = new XSSFWorkbook(file);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
         return workbook;
     }
 
@@ -48,12 +63,12 @@ public class ReadXLSX implements ManageExcel {
     private int rowsToIgnore = 3;
     private int maxCellSize = 3;
 
-    public List<Student> getStudentsFromXLS(String path) {
+    public List<Student> getStudentsFromXLS(InputStream path) {
 
         List<Student> students = new ArrayList<>();
         try {
 
-            Workbook workbook = readFile(path);
+            Workbook workbook = getFile(path);
             Sheet datatypeSheet = workbook.getSheetAt(0);
             Iterator<Row> iterator = datatypeSheet.iterator();
 
@@ -76,9 +91,11 @@ public class ReadXLSX implements ManageExcel {
                         if (cellCounter < maxCellSize) {
 
                             if (currentCell.getColumnIndex() == 0) {
-                                student.setId(currentCell.getNumericCellValue());
+                                Double cellValue = currentCell.getNumericCellValue();
+                                System.out.println("Valor del id " + cellValue + "intvalue " + cellValue.intValue());
+                                student.setIdStudent(cellValue.intValue());
                             } else if (currentCell.getColumnIndex() == 1) {
-                                student.setIdCard(currentCell.getStringCellValue().replaceAll(" ", ""));
+                                student.setCode(currentCell.getStringCellValue().replaceAll(" ", ""));
                             } else if (currentCell.getColumnIndex() == 2) {
                                 student.setName(currentCell.getStringCellValue());
                             }
@@ -101,6 +118,10 @@ public class ReadXLSX implements ManageExcel {
         }
 
         return students;
+    }
+
+    public boolean passXlsToBd(List<Student> studentList){
+        return false;
     }
 
 }

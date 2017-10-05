@@ -7,13 +7,15 @@ package com.rplp.controlcore.core;
 
 import org.apache.poi.ss.usermodel.Workbook;
 
+import java.io.File;
+
 /**
  *
  * @author luisdany pernillo
  */
 public interface ManageExcel {
     
-    Workbook readFile(String path);
+    Workbook readFile(File file);
     
     void writeFile();
     

@@ -5,11 +5,14 @@
  */
 package com.rplp.controlcore.entity;
 
+import java.io.Serializable;
+
 /**
  *
  * @author luisdany
- */
-public class Classes {
+ * @version 0.1
+ * */
+public class Classes implements Serializable{
     
     private int idClass;
     private String name;
